@@ -1,0 +1,38 @@
+#######################################
+# Syntax Coloring Map For LIS3DHH
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+LIS3DHHSensor	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+Enable_X						KEYWORD2
+Disable_X						KEYWORD2
+ReadID							KEYWORD2
+Get_X_Axes						KEYWORD2
+Get_X_Sensitivity				KEYWORD2
+Get_X_AxesRaw					KEYWORD2
+Get_X_ODR						KEYWORD2
+Set_X_ODR						KEYWORD2
+Get_X_FS						KEYWORD2
+Set_X_FS						KEYWORD2
+Enable_DRDY_Interrupt			KEYWORD2
+Disable_DRDY_Interrupt			KEYWORD2
+Set_Filter_Mode					KEYWORD2
+Get_DRDY_Status					KEYWORD2
+Get_FIFO_Num_Samples			KEYWORD2
+Set_FIFO_Mode					KEYWORD2
+ReadReg							KEYWORD2
+WriteReg						KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+LIS3DHH_ACC_SENSITIVITY			LITERAL1
