@@ -54,39 +54,65 @@ LIS3DHHSensor::LIS3DHHSensor(SPIClass *spi, int cs_pin, uint32_t spi_speed) : de
   reg_ctx.write_reg = LIS3DHH_io_write;
   reg_ctx.read_reg = LIS3DHH_io_read;
   reg_ctx.handle = (void *)this;
+  X_isEnabled = 0U;
+}
 
+/**
+ * @brief  Configure the sensor in order to be used
+ * @retval 0 in case of success, an error code otherwise
+ */
+LIS3DHHStatusTypeDef LIS3DHHSensor::begin()
+{
   // Configure CS pin
   pinMode(cs_pin, OUTPUT);
-  digitalWrite(cs_pin, HIGH);
+  digitalWrite(cs_pin, HIGH); 
 
   /* Enable register address automatically incremented during a multiple byte
   access with a serial interface. */
   if (lis3dhh_auto_add_inc_set(&reg_ctx, PROPERTY_ENABLE) != 0)
   {
-    return;
+    return LIS3DHH_STATUS_ERROR;
   }
 
   /* Enable BDU */
   if (lis3dhh_block_data_update_set(&reg_ctx, PROPERTY_ENABLE) != 0)
   {
-    return;
+    return LIS3DHH_STATUS_ERROR;
   }
 
   /* FIFO mode selection */
   if (lis3dhh_fifo_mode_set(&reg_ctx, LIS3DHH_BYPASS_MODE) != 0)
   {
-    return;
+    return LIS3DHH_STATUS_ERROR;
   }
 
   /* Output data rate selection - power down. */
   if (lis3dhh_data_rate_set(&reg_ctx, LIS3DHH_POWER_DOWN) != 0)
   {
-    return;
+    return LIS3DHH_STATUS_ERROR;
   }
 
   X_isEnabled = 0;
 
-  return;
+  return LIS3DHH_STATUS_OK;
+}
+
+/**
+ * @brief  Disable the sensor and relative resources
+ * @retval 0 in case of success, an error code otherwise
+ */
+LIS3DHHStatusTypeDef LIS3DHHSensor::end()
+{
+  /* Disable acc */
+  if (Disable_X() != LIS3DHH_STATUS_OK)
+  {
+    return LIS3DHH_STATUS_ERROR;
+  }
+
+  /* Reset CS configuration */
+  pinMode(cs_pin, INPUT); 
+
+  return LIS3DHH_STATUS_OK;
 }
 
 /**
@@ -96,7 +122,7 @@ LIS3DHHSensor::LIS3DHHSensor(SPIClass *spi, int cs_pin, uint32_t spi_speed) : de
 LIS3DHHStatusTypeDef LIS3DHHSensor::Enable_X(void)
 { 
   /* Check if the component is already enabled */
-  if (X_isEnabled == 1)
+  if (X_isEnabled == 1U)
   {
     return LIS3DHH_STATUS_OK;
   }
@@ -107,7 +133,7 @@ LIS3DHHStatusTypeDef LIS3DHHSensor::Enable_X(void)
     return LIS3DHH_STATUS_ERROR;
   }
   
-  X_isEnabled = 1;
+  X_isEnabled = 1U;
   
   return LIS3DHH_STATUS_OK;
 }
@@ -119,7 +145,7 @@ LIS3DHHStatusTypeDef LIS3DHHSensor::Enable_X(void)
 LIS3DHHStatusTypeDef LIS3DHHSensor::Disable_X(void)
 { 
   /* Check if the component is already disabled */
-  if (X_isEnabled == 0)
+  if (X_isEnabled == 0U)
   {
     return LIS3DHH_STATUS_OK;
   }
@@ -130,7 +156,7 @@ LIS3DHHStatusTypeDef LIS3DHHSensor::Disable_X(void)
     return LIS3DHH_STATUS_ERROR;
   }
   
-  X_isEnabled = 0;
+  X_isEnabled = 0U;
   
   return LIS3DHH_STATUS_OK;
 }
