@@ -75,6 +75,8 @@ class LIS3DHHSensor
 {
   public:
     LIS3DHHSensor(SPIClass *spi, int cs_pin, uint32_t spi_speed=2000000);
+    LIS3DHHStatusTypeDef begin(void);
+    LIS3DHHStatusTypeDef end(void);
     LIS3DHHStatusTypeDef Enable_X(void);
     LIS3DHHStatusTypeDef Disable_X(void);
     LIS3DHHStatusTypeDef ReadID(uint8_t *id);
